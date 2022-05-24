@@ -1,0 +1,20 @@
+﻿@model DatabaseDomain.DTOs.Security.Role.UpdateRoleDTO
+
+@{
+    Layout = "~/Views/Shared/_adminLayout.cshtml";
+    ViewBag.Title = "ویرایش نقش";
+    ViewBag.PageTitle = "ویرایش نقش";
+}
+
+<form method="post" asp-action="EditRole">
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <div class="form-group">
+        <input asp-for="Title" class="form-control" placeholder="عنوان" />
+        <span asp-validation-for="Title" class="text-danger"></span>
+        <input type="hidden" asp-for="Id" />
+    </div>
+    <button type="submit" class="btn btn-success">ذخیره</button>
+    <a asp-action="Roles" class="btn btn-danger">بازگشت</a>
+</form>
+
+

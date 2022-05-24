@@ -1,0 +1,46 @@
+﻿@model DatabaseDomain.DTOs.Security.Role.RoleDTO
+
+@{
+    Layout = "~/Views/Shared/_adminLayout.cshtml";
+    ViewBag.Title = "نقش ها";
+    ViewBag.PageTitle = "نقش ها";
+}
+
+<table class="table table-dark text-center table-bordered table-striped table-hover">
+    <thead class="fontIranYekan">
+        <tr>
+            <th>نام</th>
+            <th>عملیات</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.RoleInfos)
+        {
+            <tr>
+                <td>
+                    @item.Title
+                    <input asp-for="@item.Id" type="hidden">
+                </td>
+                <td>
+                    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
+                        عملیات
+                    </button>
+                    <div class="dropdown-menu shadow animated--grow-in">
+                        @foreach (var link in Model.Actions)
+                        {
+                            <a style='margin-right:16px' class="dropdown-item" asp-controller="@link.Controller" asp-action="@link.Action" asp-route-Id="@item.Id">
+                                @link.Title
+                            </a>
+                        }
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<a asp-action="CreateRole" class="btn btn-success">
+    جدید
+</a>
+
+
