@@ -9,7 +9,11 @@ namespace DatabaseDomain.DTOs.Account.Login
 {
     public class loginDTO
     {
-
+        [Required(ErrorMessage = "نام کاربری اجباری میباشد")]
         public string Username { get; set; }
+        [Required(ErrorMessage = "رمز عبور اجباری میباشد")]
+        [DataType(DataType.Password)]
+        public string Password { get; set; }
+        public bool RememberMe { get; set; }
     }
 }

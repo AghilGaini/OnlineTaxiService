@@ -1,8 +1,51 @@
 ﻿@{
     Layout = "~/Views/Shared/_adminLayout.cshtml";
     ViewBag.Title = "Home Test";
+    ViewBag.PageTitle = "خانه";
 }
 
-<h1>Home</h1>
+<button class="btn btn-danger" onclick="Delete()" >حذف</button>
+@if (ViewBag.Success != "")
+{
+    <script>
+        swal({
+          title: "عملیات با موفقیت انجام شد",
+          icon: "success",
+        });
+    </script>
+}
 
 
+<script>
+        function Delete()
+        {
+            swal({
+                  title: "حذف",
+                  text: "از انجام عملیات مطمئن هستید؟",
+                  icon: "warning",
+                  buttons: ["خیر", "بله"],
+                  dangerMode: true,
+                })
+                .then((willDelete) => {
+                  if (willDelete) {
+                      $.ajax({
+                        type: "POST",
+                        url: "@Url.Action("Delete")",
+                        data: {id : 1},
+                        dataType: "text",
+                        success: function (msg) {
+                            swal(msg, {
+                                icon: "success",
+                            });
+                            console.log(msg);
+                        },
+                        error: function (req, status, error) {
+                            console.log(msg);
+                        }
+                    }); 
+                  } else {
+                
+                  }
+                });
+        }
+</Script>

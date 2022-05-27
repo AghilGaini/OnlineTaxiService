@@ -14,7 +14,14 @@ namespace MvcPanel.Controllers
         }
         public ActionResult Index()
         {
+            ViewBag.Success = "test";
             return View();
+        }
+
+        [HttpPost]
+        public ActionResult Delete(long id)
+        {
+            return Content("id is : " + id);
         }
     }
 }
