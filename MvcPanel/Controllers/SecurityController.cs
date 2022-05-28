@@ -3,9 +3,11 @@ using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using DatabaseDomain.Models;
 using DatabaseDomain.DTOs.Security.Role;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MvcPanel.Controllers
 {
+    [Authorize]
     public class SecurityController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;

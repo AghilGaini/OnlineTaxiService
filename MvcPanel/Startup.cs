@@ -1,6 +1,7 @@
 using DatabaseAccessLayer.EFCore.Contexts;
 using DatabaseAccessLayer.EFCore.Repositories;
 using DatabaseDomain.Interfaces;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -35,6 +36,9 @@ namespace MvcPanel
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
+            services.AddAuthentication("an")
+                .AddCookie(options => options.LoginPath = "/Account/Login");
+
         }
 
 
@@ -46,6 +50,10 @@ namespace MvcPanel
             }
 
             app.UseStaticFiles();
+
+            app.UseAuthentication();
+            app.UseAuthorization();
+
             app.UseMvc(routes =>
             {
                 routes.MapRoute("Default", "{Controller=Home}/{Action=Index}/{Id?}");

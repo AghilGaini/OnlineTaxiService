@@ -1,6 +1,7 @@
 ﻿using DatabaseAccessLayer.EFCore.Contexts;
 using DatabaseDomain.Entities;
 using DatabaseDomain.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,6 +19,9 @@ namespace DatabaseAccessLayer.EFCore.Repositories
             _context = context;
         }
 
-
+        public async Task<UserDomain> GetByUsername(string username)
+        {
+            return await _context.Users.FirstOrDefaultAsync(r => r.Username == username);
+        }
     }
 }

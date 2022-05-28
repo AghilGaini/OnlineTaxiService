@@ -9,6 +9,6 @@ namespace DatabaseDomain.Interfaces
 {
     public interface IUserDomain : IGenericDomain<UserDomain>
     {
-
+        Task<UserDomain> GetByUsername(string username);
     }
 }

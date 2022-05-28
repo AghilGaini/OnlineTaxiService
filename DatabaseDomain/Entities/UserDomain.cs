@@ -13,6 +13,8 @@ namespace DatabaseDomain.Entities
         public long Id { get; set; }
         [Required(ErrorMessage = "نام کاربری اجباری میباشد")]
         public string Username { get; set; }
+        [Required(ErrorMessage = "رمز عبور اجباری میباشد")]
+        public string Password { get; set; }
         public bool? IsActive { get; set; }
         public bool? IsAdmin { get; set; }
         public DateTime CreatedOn { get; set; }
