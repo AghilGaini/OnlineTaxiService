@@ -36,7 +36,7 @@ namespace MvcPanel
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
-            services.AddAuthentication("an")
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options => options.LoginPath = "/Account/Login");
 
         }

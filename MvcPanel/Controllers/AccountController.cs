@@ -29,11 +29,11 @@ namespace MvcPanel.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Login(loginDTO model, string ReturnUrl)
+        public async Task<IActionResult> Login(loginDTO model)
         {
             if (ModelState.IsValid)
             {
-                var user = await _unitOfWork._user.GetByUsername(model.Username);
+                var user = await _unitOfWork._user.GetByUsernameAndUserType(model.Username, model.UserType);
 
                 if (user == null || user.Password != model.Password)
                 {
@@ -44,13 +44,13 @@ namespace MvcPanel.Controllers
                 var claims = new List<Claim>
                 {
                     new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                    new Claim(ClaimTypes.Name, user.Id.ToString())
+                    new Claim(ClaimTypes.Name, user.Username)
                 };
 
-                var identity = new ClaimsIdentity(claims, "an");
+                var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                 var principal = new ClaimsPrincipal(identity);
 
-                await HttpContext.SignInAsync("an", principal,
+                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal,
                     new AuthenticationProperties() { IsPersistent = model.RememberMe });
 
                 if (model.ReturnUrl != null)
@@ -66,9 +66,10 @@ namespace MvcPanel.Controllers
         [HttpGet]
         public async Task<IActionResult> Logout()
         {
-            await HttpContext.SignOutAsync("an");
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
 
             return RedirectToAction("Login");
         }
+
     }
 }

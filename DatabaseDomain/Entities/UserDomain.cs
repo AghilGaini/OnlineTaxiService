@@ -14,6 +14,7 @@ namespace DatabaseDomain.Entities
         [Required(ErrorMessage = "نام کاربری اجباری میباشد")]
         public string Username { get; set; }
         [Required(ErrorMessage = "رمز عبور اجباری میباشد")]
+        public int UserType { get; set; }
         public string Password { get; set; }
         public bool? IsActive { get; set; }
         public bool? IsAdmin { get; set; }

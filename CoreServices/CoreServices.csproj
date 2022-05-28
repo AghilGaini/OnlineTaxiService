@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CoreServices\CoreServices.csproj" />
+    <Folder Include="NewFolder\" />
   </ItemGroup>
 
 </Project>

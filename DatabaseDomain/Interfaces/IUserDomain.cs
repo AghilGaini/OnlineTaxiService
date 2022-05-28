@@ -1,4 +1,5 @@
-﻿using DatabaseDomain.Entities;
+﻿using CoreServices;
+using DatabaseDomain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,5 +11,6 @@ namespace DatabaseDomain.Interfaces
     public interface IUserDomain : IGenericDomain<UserDomain>
     {
         Task<UserDomain> GetByUsername(string username);
+        Task<UserDomain> GetByUsernameAndUserType(string username, int userType);
     }
 }
