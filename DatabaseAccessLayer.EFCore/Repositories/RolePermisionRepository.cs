@@ -1,4 +1,5 @@
 ﻿using DatabaseAccessLayer.EFCore.Contexts;
+using DatabaseDomain.DTOs.Security.RolePermision;
 using DatabaseDomain.Entities;
 using DatabaseDomain.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -17,6 +18,28 @@ namespace DatabaseAccessLayer.EFCore.Repositories
         public RolePermisionRepository(ApplicationContext context) : base(context)
         {
             _context = context;
+        }
+
+        public async Task<bool> AddRolePermisionsDTO(List<RolePermisionDTO> rolePermisionDTOs)
+        {
+            await _context.RolePermisions.AddRangeAsync(
+                rolePermisionDTOs.Select(r => new RolePermisionDomain()
+                {
+                    RoleId = r.RoleId,
+                    PermisionId = r.PermisionId
+                }).ToList()
+                );
+
+            return true;
+        }
+
+        public async Task<bool> DeleteByRoleId(long roleId)
+        {
+            var rolePermisions = await _context.RolePermisions.Where(r => r.RoleId == roleId).ToListAsync();
+
+            _context.RolePermisions.RemoveRange(rolePermisions);
+
+            return true;
         }
 
         public async Task<List<long>> GetPermisionsIdByRoleId(long roleId)

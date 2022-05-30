@@ -27,23 +27,20 @@ namespace DatabaseAccessLayer.EFCore.Repositories
             return true;
         }
 
-        public async Task<List<PermisionDTO>> GetAllPermisionsDTO()
+        public async Task<PermisionDTO> GetAllPermisionsDTO()
         {
-            var permisionsDTO = await _context.Permisions.Select(r =>
-                new PermisionDTO()
-                {
-                    Title = r.Title,
-                    Value = r.Value,
-                    IsSelected = false,
-                    Id = r.Id
-                }).ToListAsync();
+            var permisionDTO = new PermisionDTO();
 
-            return permisionsDTO;
-        }
+            permisionDTO.Permisions = await _context.Permisions.Select(r =>
+               new PermisionInfoDTO()
+               {
+                   Title = r.Title,
+                   Value = r.Value,
+                   IsSelected = false,
+                   Id = r.Id
+               }).ToListAsync();
 
-        public async Task<List<PermisionDTO>> GetPermisionsByRoleId(long roleId)
-        {
-
+            return permisionDTO;
         }
     }
 }

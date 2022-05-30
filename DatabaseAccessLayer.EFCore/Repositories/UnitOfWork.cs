@@ -15,6 +15,7 @@ namespace DatabaseAccessLayer.EFCore.Repositories
         public IRoleDomain _role { get; set; }
         public IUserDomain _user { get; set; }
         public IPermisionDomain _permision { get; set; }
+        public IRolePermisionDomain _rolePermision { get; set; }
 
         public UnitOfWork(ApplicationContext context)
         {
@@ -22,7 +23,7 @@ namespace DatabaseAccessLayer.EFCore.Repositories
             _role = new RoleRepository(context);
             _user = new UserRepository(context);
             _permision = new PermisionRepository(context);
-
+            _rolePermision = new RolePermisionRepository(context);
         }
 
         public void Commit()

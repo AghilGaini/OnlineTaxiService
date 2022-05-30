@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using System.Linq;
 using System.Collections.Generic;
 using DatabaseDomain.DTOs.Security.Permision;
+using DatabaseDomain.DTOs.Security.RolePermision;
 
 namespace MvcPanel.Controllers
 {
@@ -129,6 +130,7 @@ namespace MvcPanel.Controllers
 
         #region Permisions
 
+        [HttpGet]
         public async Task<IActionResult> Permisions(long Id)
         {
             var allPermisions = await _unitOfWork._permision.GetAllPermisionsDTO();
@@ -148,10 +150,9 @@ namespace MvcPanel.Controllers
 
             var permisionsId = await _unitOfWork._rolePermision.GetPermisionsIdByRoleId(role.Id);
 
-            foreach (var item in allPermisions)
+            foreach (var item in allPermisions.Permisions)
             {
-                var permisionid = permisionsId.FirstOrDefault(r => r == item.Id);
-                if (permisionid != 0)
+                if (permisionsId.Any(r => r == item.Id))
                 {
                     item.IsSelected = true;
                 }
@@ -159,12 +160,49 @@ namespace MvcPanel.Controllers
 
             ViewBag.RoleTitle = role.Title;
 
+            allPermisions.RoleId = role.Id;
+
             return View(allPermisions);
         }
 
-        public IActionResult UpdateRolePermisions(List<PermisionDTO>)
+        [HttpPost]
+        public async Task<IActionResult> Permisions(PermisionDTO model)
         {
+            if (ModelState.IsValid)
+            {
+                var role = await _unitOfWork._role.GetById(model.RoleId);
+                if (role == null)
+                {
+                    ModelState.AddModelError("", "نقشی پیدا نشد");
+                    return View(model);
+                }
 
+                if (await _unitOfWork._rolePermision.DeleteByRoleId(model.RoleId))
+                {
+                    var newRolePermisions = new List<RolePermisionDTO>();
+
+                    foreach (var item in model.Permisions)
+                    {
+                        if (item.IsSelected)
+                        {
+                            newRolePermisions.Add(new RolePermisionDTO()
+                            {
+                                PermisionId = item.Id,
+                                RoleId = model.RoleId
+                            });
+                        }
+                    }
+
+                    if (await _unitOfWork._rolePermision.AddRolePermisionsDTO(newRolePermisions))
+                    {
+                        _unitOfWork.Commit();
+
+                        return RedirectToAction("Roles");
+                    }
+                }
+            }
+
+            return View(model);
         }
 
         #endregion

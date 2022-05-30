@@ -1,16 +1,19 @@
-﻿@model List<DatabaseDomain.DTOs.Security.Permision.PermisionDTO>
+﻿@model DatabaseDomain.DTOs.Security.Permision.PermisionDTO
 
 @{
     ViewBag.Title = "مدیریت دسترسی ها";
     Layout = "~/Views/Shared/_adminLayout.cshtml";
 }
+@if (ViewBag.RoleTitle != null)
+{
+    <h1>دسترسی های نقش : @ViewBag.RoleTitle</h1>
+}
 
-<h1>دسترسی های نقش : @ViewBag.RoleTitle</h1>
-
-<form method="post" asp-action="UpdateRolePermisions">
+<form method="post" asp-action="Permisions">
 
     <div asp-validation-summary="All" class="text-danger"></div>
 
+    <input asp-for="RoleId" type="hidden" />
     <table class="table table-dark text-center table-bordered table-striped table-hover">
         <thead class="fontIranYekan">
             <tr>
@@ -20,17 +23,21 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var item in Model)
-            {
 
+            @for (int i = 0; i < Model.Permisions.Count; i++)
+            {
                 <tr>
                     <td>
-                        @item.Title
-                        <input asp-for="@item.Id" type="hidden">
+                        @Model.Permisions[i].Title
+                        <input asp-for="@Model.Permisions[i].Title" type="hidden">
+                        <input asp-for="@Model.Permisions[i].Id" type="hidden">
                     </td>
-                    <td>@item.Value</td>
                     <td>
-                        <input asp-for="@item.IsSelected">
+                        @Model.Permisions[i].Value
+                        <input asp-for="@Model.Permisions[i].Value" type="hidden">
+                    </td>
+                    <td>
+                        <input asp-for="@Model.Permisions[i].IsSelected">
                     </td>
                 </tr>
             }
@@ -38,5 +45,6 @@
     </table>
 
     <button type="submit" class="btn btn-success">ذخیره تغییرات</button>
+    <a asp-action="roles" class="btn btn-danger">بازگشت</a>
 </form>
 
