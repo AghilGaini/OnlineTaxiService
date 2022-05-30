@@ -1,0 +1,42 @@
+﻿@model List<DatabaseDomain.DTOs.Security.Permision.PermisionDTO>
+
+@{
+    ViewBag.Title = "مدیریت دسترسی ها";
+    Layout = "~/Views/Shared/_adminLayout.cshtml";
+}
+
+<h1>دسترسی های نقش : @ViewBag.RoleTitle</h1>
+
+<form method="post" asp-action="UpdateRolePermisions">
+
+    <div asp-validation-summary="All" class="text-danger"></div>
+
+    <table class="table table-dark text-center table-bordered table-striped table-hover">
+        <thead class="fontIranYekan">
+            <tr>
+                <th>عنوان</th>
+                <th>مقدار</th>
+                <th>انتخاب</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+
+                <tr>
+                    <td>
+                        @item.Title
+                        <input asp-for="@item.Id" type="hidden">
+                    </td>
+                    <td>@item.Value</td>
+                    <td>
+                        <input asp-for="@item.IsSelected">
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <button type="submit" class="btn btn-success">ذخیره تغییرات</button>
+</form>
+

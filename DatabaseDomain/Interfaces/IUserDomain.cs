@@ -1,5 +1,4 @@
-﻿using CoreServices;
-using DatabaseDomain.DTOs.Account.Register;
+﻿using DatabaseDomain.DTOs.Account.Register;
 using DatabaseDomain.Entities;
 using System;
 using System.Collections.Generic;

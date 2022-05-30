@@ -4,10 +4,13 @@ using System.Threading.Tasks;
 using DatabaseDomain.Models;
 using DatabaseDomain.DTOs.Security.Role;
 using Microsoft.AspNetCore.Authorization;
+using System.Linq;
+using System.Collections.Generic;
+using DatabaseDomain.DTOs.Security.Permision;
 
 namespace MvcPanel.Controllers
 {
-    [Authorize]
+
     public class SecurityController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -25,6 +28,7 @@ namespace MvcPanel.Controllers
             var res = await _unitOfWork._role.GetRolesAsync();
 
             res.Actions.Add(new ActionItem() { Controller = "Security", Action = "EditRole", Title = "ویرایش" });
+            res.Actions.Add(new ActionItem() { Controller = "Security", Action = "Permisions", Title = "دسترسی ها" });
             res.Actions.Add(new ActionItem() { Controller = "Security", Action = "DeleteRole", Title = "حذف" });
 
             return View(res);
@@ -119,6 +123,48 @@ namespace MvcPanel.Controllers
             }
 
             return RedirectToAction("Roles");
+        }
+
+        #endregion
+
+        #region Permisions
+
+        public async Task<IActionResult> Permisions(long Id)
+        {
+            var allPermisions = await _unitOfWork._permision.GetAllPermisionsDTO();
+
+            if (Id == 0)
+            {
+                ModelState.AddModelError("", "نقشی پیدا نشد");
+                return View(allPermisions);
+            }
+
+            var role = await _unitOfWork._role.GetById(Id);
+            if (role == null)
+            {
+                ModelState.AddModelError("", "نقشی پیدا نشد");
+                return View(allPermisions);
+            }
+
+            var permisionsId = await _unitOfWork._rolePermision.GetPermisionsIdByRoleId(role.Id);
+
+            foreach (var item in allPermisions)
+            {
+                var permisionid = permisionsId.FirstOrDefault(r => r == item.Id);
+                if (permisionid != 0)
+                {
+                    item.IsSelected = true;
+                }
+            }
+
+            ViewBag.RoleTitle = role.Title;
+
+            return View(allPermisions);
+        }
+
+        public IActionResult UpdateRolePermisions(List<PermisionDTO>)
+        {
+
         }
 
         #endregion

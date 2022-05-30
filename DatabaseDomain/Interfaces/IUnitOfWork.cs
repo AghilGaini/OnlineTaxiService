@@ -11,6 +11,7 @@ namespace DatabaseDomain.Interfaces
         public IRoleDomain _role { get; set; }
         public IUserDomain _user { get; set; }
         public IPermisionDomain _permision { get; set; }
+        public IRolePermisionDomain _rolePermision { get; set; }
         void Commit();
 
     }

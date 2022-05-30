@@ -12,8 +12,10 @@ namespace MvcPanel.Controllers
         {
             _unitOfWork = unitOfWork;
         }
-        public ActionResult Index()
+        public async Task<ActionResult> Index()
         {
+            await CoreServices.PermisionManager.SetPermisions(_unitOfWork);
+
             ViewBag.Success = "test";
             return View();
         }

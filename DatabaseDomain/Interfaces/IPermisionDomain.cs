@@ -1,4 +1,5 @@
-﻿using DatabaseDomain.Entities;
+﻿using DatabaseDomain.DTOs.Security.Permision;
+using DatabaseDomain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,11 @@ namespace DatabaseDomain.Interfaces
 {
     public interface IPermisionDomain : IGenericDomain<PermisionDomain>
     {
+        Task<bool> AddRange(List<PermisionDomain> permisions);
+
+        Task<List<PermisionDTO>> GetAllPermisionsDTO();
+
+        Task<List<PermisionDTO>> GetPermisionsByRoleId(long roleId);
 
     }
 }
