@@ -10,6 +10,7 @@ namespace DatabaseDomain.Interfaces
     {
         public IRoleDomain _role { get; set; }
         public IUserDomain _user { get; set; }
+        public IPermisionDomain _permision { get; set; }
         void Commit();
 
     }

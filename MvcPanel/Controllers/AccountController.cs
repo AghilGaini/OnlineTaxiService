@@ -1,4 +1,5 @@
 ﻿using DatabaseDomain.DTOs.Account.Login;
+using DatabaseDomain.DTOs.Account.Register;
 using DatabaseDomain.Interfaces;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -69,6 +70,41 @@ namespace MvcPanel.Controllers
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
 
             return RedirectToAction("Login");
+        }
+
+        [HttpGet]
+        public IActionResult Register()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Register(RegisterDTO model)
+        {
+            if (ModelState.IsValid)
+            {
+                if (await _unitOfWork._user.IsDuplicateByUsernameAndUserType(model.Username, model.UserType, 0))
+                {
+                    ModelState.AddModelError("", "نام کاربری تکراری میباشد");
+                    return View(model);
+                }
+
+                if (await _unitOfWork._user.RegisterUserDTO(model))
+                {
+                    _unitOfWork.Commit();
+
+                    var claims = new List<Claim>() { new Claim(ClaimTypes.Name, model.Username) };
+                    var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                    var principal = new ClaimsPrincipal(identity);
+
+                    await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal,
+                        new AuthenticationProperties() { IsPersistent = model.RememberMe });
+
+                    return RedirectToAction("index", "home");
+                }
+            }
+
+            return View(model);
         }
 
     }

@@ -1,0 +1,34 @@
+﻿@model DatabaseDomain.DTOs.Account.Register.RegisterDTO
+@{
+    Layout = "~/Views/Shared/_LoginLayout.cshtml";
+    ViewBag.Title = "ایجاد حساب";
+}
+
+
+<form method="post" asp-action="Register">
+
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <div class="form-group">
+        <input asp-for="Username" class="form-control" placeholder="نام کاربری" />
+        <span asp-validation-for="Username"></span>
+    </div>
+    <div class="form-group">
+        <input asp-for="Password" class="form-control" placeholder="رمز عبور" />
+        <span asp-validation-for="Password"></span>
+    </div>
+    <div class="form-group">
+        <input asp-for="Email" class="form-control" placeholder="ایمیل" />
+        <span asp-validation-for="Email"></span>
+    </div>
+    <div class="form-group">
+        <input asp-for="UserType" type="radio" checked="checked" value="@((int)CoreServices.Enums.UserType.Passenger)" />مسافر<br />
+        <input asp-for="UserType" type="radio" value="@((int)CoreServices.Enums.UserType.Driver)" />راننده<br />
+    </div>
+    <div class="form-group">
+        <label for="chbRememberMe">مرا به خاطر بسپار</label>
+        <input type="checkbox" id="chbRememberMe" asp-for="RememberMe" />
+    </div>
+
+    <button type="submit" class="btn btn-success">ایجاد</button>
+</form>
+
