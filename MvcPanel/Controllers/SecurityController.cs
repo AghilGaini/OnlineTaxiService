@@ -8,6 +8,8 @@ using System.Linq;
 using System.Collections.Generic;
 using DatabaseDomain.DTOs.Security.Permision;
 using DatabaseDomain.DTOs.Security.RolePermision;
+using CoreServices;
+using DatabaseDomain.DTOs.Account.UserRoles;
 
 namespace MvcPanel.Controllers
 {
@@ -202,6 +204,116 @@ namespace MvcPanel.Controllers
                 }
             }
 
+            return View(model);
+        }
+
+        #endregion
+
+        #region Users
+
+        [HttpGet]
+        public async Task<IActionResult> Users()
+        {
+            var users = await _unitOfWork._user.GetAllUsersDTO();
+
+            foreach (var item in users.Users)
+            {
+                switch (item.UserType)
+                {
+                    case (int)Enums.UserType.Passenger:
+                        item.UserTypeTitle = "مسافر";
+                        break;
+                    case (int)Enums.UserType.Driver:
+                        item.UserTypeTitle = "راننده";
+                        break;
+                    case (int)Enums.UserType.Admin:
+                        item.UserTypeTitle = "ادمین";
+                        break;
+                }
+
+            }
+
+            users.Actions.Add(new ActionItem() { Controller = "Security", Action = "userRoles", Title = "مدیریت نقش" });
+
+            return View(users);
+        }
+
+        #endregion
+
+        #region UserRoles
+
+        public async Task<IActionResult> UserRoles(long id)
+        {
+            var allRoles = await _unitOfWork._role.GetRolesDTO();
+
+            if (id == 0)
+            {
+                ModelState.AddModelError("", "کاربری پیدا نشد");
+                return View(allRoles);
+            }
+
+            var user = await _unitOfWork._user.GetById(id);
+
+            if (user == null)
+            {
+                ModelState.AddModelError("", "کاربری پیدا نشد");
+                return View(allRoles);
+            }
+
+            var userRoles = await _unitOfWork._userRole.GetRolesByUserId(id);
+
+            foreach (var item in allRoles.Roles)
+            {
+                if (userRoles.Any(r => r == item.RoleId))
+                {
+                    item.IsSelected = true;
+                }
+            }
+
+            allRoles.UserId = id;
+
+            return View(allRoles);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UserRoles(UserRolesDTO model)
+        {
+            if (ModelState.IsValid)
+            {
+                if (model.UserId == 0)
+                {
+                    ModelState.AddModelError("", "کاربری پیدا نشد");
+                    return View(model);
+                }
+
+                var user = await _unitOfWork._user.GetById(model.UserId);
+                if (user == null)
+                {
+                    ModelState.AddModelError("", "کاربری پیدا نشد");
+                    return View(model);
+                }
+
+                if (await _unitOfWork._userRole.DeleteByUserId(model.UserId))
+                {
+                    var newUserRoles = new UserRolesDTO();
+                    newUserRoles.UserId = model.UserId;
+
+                    foreach (var item in model.Roles)
+                    {
+                        if (item.IsSelected)
+                        {
+                            newUserRoles.Roles.Add(new UserRolesInfoDTO() { RoleId = item.RoleId, RoleTitle = item.RoleTitle });
+                        }
+                    }
+
+                    if (await _unitOfWork._userRole.AddRangeUserRoleDTO(newUserRoles))
+                    {
+                        _unitOfWork.Commit();
+                        return RedirectToAction("Users");
+                    }
+                }
+
+            }
             return View(model);
         }
 

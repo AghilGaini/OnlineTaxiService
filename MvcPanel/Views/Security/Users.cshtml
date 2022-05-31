@@ -1,0 +1,57 @@
+﻿@model DatabaseDomain.DTOs.Account.Users.UserDTO
+@{
+    Layout = "~/Views/Shared/_adminLayout.cshtml";
+    ViewBag.Title = "کاربران";
+    ViewBag.PageTitle = "کاربران";
+}
+
+<table class="table table-dark text-center table-bordered table-striped table-hover">
+    <thead class="fontIranYekan">
+        <tr>
+            <th>نام کاربری</th>
+            <th>نوع کاربر</th>
+            <th>فعال</th>
+            <th>عملیات</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Users)
+        {
+            <tr>
+                <td>
+                    @item.Username
+                </td>
+                <td>
+                    @item.UserTypeTitle
+                </td>
+                @if (item.IsActive)
+                {
+                    <td>
+                        فعال
+                    </td>
+                }
+                else
+                {
+                    <td>
+                        غیر فعال
+                    </td>
+                }
+                <td>
+                    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
+                        عملیات
+                    </button>
+                    <div class="dropdown-menu shadow animated--grow-in">
+                        @foreach (var link in Model.Actions)
+                        {
+                            <a style='margin-right:16px' class="dropdown-item" asp-controller="@link.Controller" asp-action="@link.Action" asp-route-Id="@item.UserId">
+                                @link.Title
+                            </a>
+                        }
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+

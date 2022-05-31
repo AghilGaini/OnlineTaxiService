@@ -1,4 +1,5 @@
-﻿using DatabaseDomain.DTOs.Security.Role;
+﻿using DatabaseDomain.DTOs.Account.UserRoles;
+using DatabaseDomain.DTOs.Security.Role;
 using DatabaseDomain.Entities;
 using System;
 using System.Collections.Generic;
@@ -13,7 +14,7 @@ namespace DatabaseDomain.Interfaces
         Task<RoleDTO> GetRolesAsync();
         Task<bool> IsDuplicateByName(long id, string name);
         Task AddRoleAcyncDTO(NewRoleDTO roleDTO);
-
         Task<bool> UpdateRoleDTO(UpdateRoleDTO roleDTO);
+        Task<UserRolesDTO> GetRolesDTO();
     }
 }

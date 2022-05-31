@@ -1,4 +1,5 @@
 ﻿using DatabaseAccessLayer.EFCore.Contexts;
+using DatabaseDomain.DTOs.Account.UserRoles;
 using DatabaseDomain.DTOs.Security.Role;
 using DatabaseDomain.Entities;
 using DatabaseDomain.Interfaces;
@@ -36,7 +37,6 @@ namespace DatabaseAccessLayer.EFCore.Repositories
             res.RoleInfos.AddRange(await _context.Roles.Select(r => new RoleInfoDTO() { Id = r.Id, Title = r.Title }).ToListAsync());
             return res;
         }
-
         public Task<bool> IsDuplicateByName(long id, string name)
         {
             return _context.Roles.Where(r => r.Id != id && r.Title == name).AnyAsync();
@@ -49,6 +49,21 @@ namespace DatabaseAccessLayer.EFCore.Repositories
                 return false;
             oldRole.Title = roleDTO.Title;
             return true;
+        }
+
+        async Task<UserRolesDTO> IRoleDomain.GetRolesDTO()
+        {
+            var userRoleDTO = new UserRolesDTO();
+
+            userRoleDTO.Roles.AddRange(await _context.Roles.Select(r => new UserRolesInfoDTO()
+            {
+                RoleId = r.Id,
+                RoleTitle = r.Title,
+                IsSelected = false
+            }
+           ).ToListAsync());
+
+            return userRoleDTO;
         }
     }
 }
