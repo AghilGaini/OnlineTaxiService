@@ -16,5 +16,6 @@ namespace DatabaseDomain.Interfaces
         Task AddRoleAcyncDTO(NewRoleDTO roleDTO);
         Task<bool> UpdateRoleDTO(UpdateRoleDTO roleDTO);
         Task<UserRolesDTO> GetRolesDTO();
+        Task<List<RoleDomain>> GetByIds(List<long> ids);
     }
 }

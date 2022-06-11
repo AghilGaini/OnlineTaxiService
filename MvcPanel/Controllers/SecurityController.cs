@@ -10,6 +10,7 @@ using DatabaseDomain.DTOs.Security.Permision;
 using DatabaseDomain.DTOs.Security.RolePermision;
 using CoreServices;
 using DatabaseDomain.DTOs.Account.UserRoles;
+using MvcPanel.Filters;
 
 namespace MvcPanel.Controllers
 {
@@ -25,6 +26,7 @@ namespace MvcPanel.Controllers
 
         #region Roles
 
+        [CustomAuthorize(PermisionManager.Permision.Security_Roles_HttpGet, roles: "")]
         [HttpGet]
         public async Task<IActionResult> Roles()
         {
@@ -37,12 +39,14 @@ namespace MvcPanel.Controllers
             return View(res);
         }
 
+        [CustomAuthorize(PermisionManager.Permision.Security_CreateRole_HttpGet, roles: "")]
         [HttpGet]
         public IActionResult CreateRole()
         {
             return View();
         }
 
+        [CustomAuthorize(PermisionManager.Permision.Security_CreateRole_HttpPost, roles: "")]
         [HttpPost]
         public async Task<IActionResult> CreateRole(NewRoleDTO model)
         {

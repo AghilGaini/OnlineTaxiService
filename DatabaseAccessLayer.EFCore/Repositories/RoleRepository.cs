@@ -31,12 +31,19 @@ namespace DatabaseAccessLayer.EFCore.Repositories
             await _context.Roles.AddAsync(newRole);
         }
 
+        public async Task<List<RoleDomain>> GetByIds(List<long> ids)
+        {
+            return await _context.Roles.Where(r => ids.Contains(r.Id)).ToListAsync();
+        }
+
         public async Task<RoleDTO> GetRolesAsync()
         {
             var res = new RoleDTO();
             res.RoleInfos.AddRange(await _context.Roles.Select(r => new RoleInfoDTO() { Id = r.Id, Title = r.Title }).ToListAsync());
             return res;
         }
+
+
         public Task<bool> IsDuplicateByName(long id, string name)
         {
             return _context.Roles.Where(r => r.Id != id && r.Title == name).AnyAsync();
