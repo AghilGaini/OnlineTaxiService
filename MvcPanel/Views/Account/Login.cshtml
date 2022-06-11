@@ -22,6 +22,8 @@
     <div class="form-group">
         <input asp-for="UserType" checked="checked" type="radio" value="@((int)Enums.UserType.Passenger)" id="Gender" name="userType" />مسافر<br />
         <input asp-for="UserType" type="radio" value="@((int)Enums.UserType.Driver)" id="Gender" name="userType" />راننده<br />
+        <input asp-for="UserType" type="radio" value="@((int)Enums.UserType.Admin)" id="Gender" name="userType" />مدیر<br />
+
     </div>
     <button type="submit" class="btn btn-success">ورود</button>
     <a asp-action="register" class="btn btn-info">ایجاد حساب</a>

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using static CoreServices.Enums;
 
 namespace MvcPanel.Controllers
 {
@@ -26,6 +27,7 @@ namespace MvcPanel.Controllers
             {
                 ReturnUrl = ReturnUrl
             };
+
             return View(loginDTO);
         }
 
@@ -56,9 +58,20 @@ namespace MvcPanel.Controllers
 
                 if (model.ReturnUrl != null)
                     return LocalRedirect(model.ReturnUrl);
-
-                return RedirectToAction("Index", "Home");
-
+                else
+                {
+                    switch (user.UserType)
+                    {
+                        case (int)UserType.Admin:
+                            return RedirectToAction("index", "admin");
+                        case (int)UserType.Driver:
+                            return RedirectToAction("index", "driver");
+                        case (int)UserType.Passenger:
+                            return RedirectToAction("index", "passenger");
+                        default:
+                            return RedirectToAction("AccessDenied");
+                    }
+                }
             }
 
             return View(model);

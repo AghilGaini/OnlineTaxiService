@@ -7,6 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using CoreServices;
 using Microsoft.AspNetCore.Mvc;
+using static CoreServices.Enums;
 
 namespace MvcPanel.Filters
 {
@@ -117,6 +118,22 @@ namespace MvcPanel.Filters
                         context.Result = new ForbidResult();
                 }
             }
+
+            //switch (user.UserType)
+            //{
+            //    case (int)UserType.Admin:
+            //        context.Result = new RedirectToActionResult("index", "admin", new { });
+            //        break;
+            //    case (int)UserType.Driver:
+            //        context.Result = new RedirectToActionResult("index", "driver", new { });
+            //        break;
+            //    case (int)UserType.Passenger:
+            //        context.Result = new RedirectToActionResult("index", "passenger", new { });
+            //        break;
+            //    default:
+            //        context.Result = new ForbidResult();
+            //        break;
+            //}
 
             return;
         }
