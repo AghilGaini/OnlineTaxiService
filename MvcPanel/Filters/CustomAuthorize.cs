@@ -115,25 +115,12 @@ namespace MvcPanel.Filters
                 foreach (var item in arrRoles)
                 {
                     if (!roles.Any(r => r.Title == item))
+                    {
                         context.Result = new ForbidResult();
+                        break;
+                    }
                 }
             }
-
-            //switch (user.UserType)
-            //{
-            //    case (int)UserType.Admin:
-            //        context.Result = new RedirectToActionResult("index", "admin", new { });
-            //        break;
-            //    case (int)UserType.Driver:
-            //        context.Result = new RedirectToActionResult("index", "driver", new { });
-            //        break;
-            //    case (int)UserType.Passenger:
-            //        context.Result = new RedirectToActionResult("index", "passenger", new { });
-            //        break;
-            //    default:
-            //        context.Result = new ForbidResult();
-            //        break;
-            //}
 
             return;
         }
