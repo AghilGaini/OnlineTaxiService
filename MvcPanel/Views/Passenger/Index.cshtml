@@ -63,6 +63,26 @@
             });
         }
 
+        function showChargeAmount()
+        {
+            $("#chargeAmount").modal('show');
+        }
+
+        function chargeAmount()
+        {
+            debugger;
+            var entity ={};
+            entity.Amount = $("#txtChargeAmount").val();
+            entity.Username = "@User.Identity.Name";
+
+            entity = JSON.stringify(entity);
+
+            var info = btoa(entity);
+
+            window.location.href = "@Url.Action("ShaparakPaymnet","Charge")/"+info;
+
+        }
+
     </script>
 
 </head>
@@ -71,6 +91,9 @@
     <div class="text-center mapButtons buttonBar">
         <a href="#" class="buttonBarLinks">
             <span class="fa-solid fa-calculator" onclick="submitRequest()"></span>
+        </a>
+        <a href="#" class="buttonBarLinks">
+            <span class="fas fa-plus-circle" onclick="showChargeAmount()"></span>
         </a>
         <a href="#" class="buttonBarLinks">
             <span class="fa-regular fa-trash-can" onclick="clearMarkers()"></span>
@@ -98,6 +121,28 @@
             </div>
             <div class="modal-body">
                 <h2 id="feeAmount" style="text-align:center"></h2>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div id="chargeAmount" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1>شارژ کیف پول </h1>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <input id="txtChargeAmount" type="number" placeholder="قیمت (تومان)" min="0" step="1000" />
+                </div>
+                <div>
+                    <button class="btn btn-success" onclick="chargeAmount()">پرداخت</button>
+                </div>
             </div>
         </div>
     </div>

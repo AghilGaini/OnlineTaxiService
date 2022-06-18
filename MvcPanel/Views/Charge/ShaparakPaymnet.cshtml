@@ -1,0 +1,56 @@
+﻿@model DatabaseDomain.DTOs.Charge.ShaparakPaymentDTO
+@{
+    ViewBag.Title = "پرداخت";
+}
+
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewBag.Title</title>
+
+    <link rel="stylesheet" href="~/lib/twitter-bootstrap/css/bootstrap.min.css" />
+    <script src="~/lib/jquery/jquery.slim.min.js"></script>
+    <script src="~/lib/jquery/jquery.min.js"></script>
+    <script src="~/lib/twitter-bootstrap/js/bootstrap.bundle.min.js"></script>
+
+</head>
+<body class="container">
+
+    <form method="post" asp-action="ShaparakPaymnet">
+        <div asp-validation-summary="All" class="text-danger"></div>
+        <div class="form-group">
+            <label><h2>مبلغ : @ViewBag.Amount</h2></label>
+            <br />
+            <label><h2>نام کاربری: @ViewBag.Username</h2></label>
+        </div>
+        <div class="form-group">
+            <input asp-for="Cardno" class="form-control" placeholder="شماره کارت" />
+            <span asp-validation-for="Cardno" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <input asp-for="CVV2" class="form-control" placeholder="CVV2" />
+            <span asp-validation-for="CVV2" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <input asp-for="ExpireYear" class="form-control" placeholder="تاریخ انقضا سال" />
+            <span asp-validation-for="ExpireYear" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <input asp-for="ExpireMonth" class="form-control" placeholder="تاریخ انقضا ماه" />
+            <span asp-validation-for="ExpireMonth" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <input asp-for="Password" class="form-control" placeholder="رمز کارت" />
+            <span asp-validation-for="Password" class="text-danger"></span>
+        </div>
+        <input type="hidden" asp-for="Username" value="@User.Identity.Name" />
+        <button type="submit" class="btn btn-success">پرداخت</button>
+        <a asp-action="Roles" class="btn btn-danger">بازگشت</a>
+    </form>
+
+</body>
+</html>
+
+
+

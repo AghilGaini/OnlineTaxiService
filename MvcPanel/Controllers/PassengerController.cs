@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace MvcPanel.Controllers
 {
+    [Authorize]
     public class PassengerController : Controller
     {
         public IActionResult Index()
